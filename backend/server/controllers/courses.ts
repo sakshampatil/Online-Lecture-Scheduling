@@ -29,6 +29,26 @@ export const create = async (req: IGetUserAuthInfoRequest, res: Response, next: 
   }
 };
 
+export const list = async (req: IGetUserAuthInfoRequest, res: Response, next: NextFunction) => {
+  try {
+    let params = req.query;
+    let filter = {};
+    if (params.search) {
+      filter = {
+        content: { $regex: params.search, $options: "i" },
+      };
+    }
+
+    const postsList = await courseModel.find(filter);
+
+    res.send({
+      posts: postsList,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const createInstructor = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let body = req.body;
