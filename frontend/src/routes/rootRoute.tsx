@@ -1,16 +1,25 @@
 import { Routes, Route } from "react-router-dom";
 import LoginPage from "../pages/auth/login";
-import HomePage from "../pages/dashboard/home";
 import { ProtectedRoute } from "./protectedRoute";
+import CoursesPage from "../pages/adminPanel/courses/courses";
+import InstructorsPage from "../pages/adminPanel/instructors/instructors";
 
 const RootRoute = () => {
   return (
     <Routes>
       <Route
-        path="/"
+        path="/courses"
         element={
           <ProtectedRoute>
-            <HomePage />
+            <CoursesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/instructors"
+        element={
+          <ProtectedRoute>
+            <InstructorsPage />
           </ProtectedRoute>
         }
       />

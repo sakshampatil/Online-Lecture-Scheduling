@@ -39,7 +39,7 @@ const LoginForm = () => {
       console.log("LOGIN DATA = ", loginData);
 
       dispatch(setUser({ data: loginData }));
-      navigate("/");
+      navigate("/courses");
     }
   }, [isLoginSuccess]);
 
