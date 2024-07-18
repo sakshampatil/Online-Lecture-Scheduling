@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from "express";
 import userModel from "../models/user";
 import jwt from "jsonwebtoken";
 import { responseHandler } from "../utils/responseHandler";
-import { BadRequest, Unauthorized } from "../utils/errorHandler";
+import { BadRequest, NotFound, Unauthorized } from "../utils/errorHandler";
 import bcrypt from "bcryptjs";
 import { IGetUserAuthInfoRequest } from "../types/types";
 import courseModel from "../models/course";
@@ -43,6 +43,34 @@ export const list = async (req: IGetUserAuthInfoRequest, res: Response, next: Ne
 
     res.send({
       courses: coursesList,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCourseById = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let courseId = req.params.id;
+    console.log("Courseid = ", courseId);
+    let coursefilter = {
+      _id: courseId,
+    };
+
+    const course = await courseModel.findById(coursefilter);
+
+    let lecfilter = {
+      courseId: courseId,
+    };
+    const lectures = await lectureModel.find(lecfilter);
+
+    if (!course) {
+      throw new NotFound("Course Not Found");
+    }
+
+    res.send({
+      course: course,
+      lectures: lectures,
     });
   } catch (error) {
     next(error);
